@@ -13,7 +13,7 @@
   }
 
   function output() {
-    return "Belajar Function"
+    return "Belajar Function";
   }
 
   echo luas(100,3) * 5;

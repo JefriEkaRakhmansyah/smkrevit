@@ -26,7 +26,7 @@
 if($nilai >=100 || $nilai <=0) {
     echo 'nilai salah';
 }else {
-    echo 'nilai benar'
+    echo 'nilai benar';
 }
 
 
