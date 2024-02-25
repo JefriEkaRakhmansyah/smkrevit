@@ -1,11 +1,11 @@
 <?php 
+    if (isset($_GET['id'])) {
+        $id=$_GET['id'];
 
-    require_once "../function.php";
+        $sql = "DELETE FROM tblkategori WHERE idkategori=$id";
 
+        $db->runSQL($sql);
 
-    $sql = "DELETE FROM tbkategori WHERE idkategori =$id";
-    $result = mysqli_query($koneksi,$sql);
-
-    header("location:http://localhost/smkrevit/restoran/kategori/select.php")
-
+        header("location:?f=kategori&m=select");
+    }
 ?>

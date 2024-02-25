@@ -1,78 +1,54 @@
-<div style="margin:auto; width:900px;">
+<?php
+    $jumlahdata = $db->rowCOUNT("SELECT idkategori FROM tblkategori");
+    $banyak = 4;
 
-<H3><a href="http://localhost/smkrevit/restoran/kategori/select.php">TAMBAH DATA</a></H3>
+    $halaman = ceil($jumlahdata / $banyak);
+
+    if (isset($_GET['p'])) {
+        $p=$_GET['p'];
+       $mulai = ($p * $banyak) -$banyak;      
+    }
+    else {
+        $mulai = 0;
+    }
+
+    $sql="SELECT * FROM tblkategori ORDER BY kategori ASC LIMIT $mulai,$banyak";
+    $row= $db ->getALL($sql);
+
+    $no=1+$mulai;
+?>
+<div class="float-left mr-4 row p-2">
+    <a class="btn btn-primary col-2" href="?f=kategori&m=insert" role="button">TAMBAH DATA</a>
+    <h3 class="col"> kategori</h3>
+</div>
+<table class="table table-bordered w-50 ">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Kategori</th>
+            <th>Delete</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if(!empty($row)) { ?>
+        <?php foreach($row as $r): ?>
+            <tr>
+                <td><?php echo $no++ ?></td>
+                <td><?php echo $r['kategori'] ?></td>
+                <td><a href="?f=kategori&m=delete&id=<?php echo $r['idkategori'] ?>">Delete</a></td>
+                <td><a href="?f=kategori&m=update&id=<?php echo $r['idkategori'] ?>">Update</a></td>
+            </tr>
+        <?php endforeach ?>
+        <?php } ?>
+    </tbody>
+</table>
 
 <?php
 
-    require_once "../function.php";
-
-    if (iset($_GET['hapus'])) {
-        $id=$_GET['hapus'];
-        require_once "delete.php";
-
+    for ($i=1; $i <= $halaman; $i++) { 
+        echo '<a href="?f=kategori&m=select&p='.$i.'">'.$i.'</a>';
+        echo '&nbsp &nbsp &nbsp';
     }
-
-
-    echo '<br>';
-
-    $sql= "SELECT idkategori FROM tbkategori ";
-    $result = mysqli_query($koneksi, $sql);
-
-    $jumlahdata =mysqli_num_rows($result);
-
-    
-    
-    $banyak = 3;
-
-        $halaman = ceil ($jumlahdata / $banyak);
-
-        for ($i=1; $i <= $halaman; $i++) { 
-            echo '<a href="?p='.$i.'">'.$i. '</a>';
-            echo '&nbsp &nbsp &nbsp';
-        }
-
-        echo '<br> <br> ';
-
-        if (isset($_GET['p'])) {
-        $p=$_GET['p'];
-        $mulai = ($p *$banyak) -$banyak;
-        }else {
-            $mulai = 0;
-        }
-        
-        
-    $sql= "SELECT * FROM tbkategori LIMIT $mulai,$banyak";
-
-    $result = mysqli_query($koneksi, $sql);
-
-   // var_dump($result);
-
-    $jumlah = mysqli_num_rows($result);
-    // echo '<br>';
-    // echo $jumlah;
-
-    echo '
-    <table border="1px">
-    <tr>
-        <th>No</th>
-        <th>kategori</th>
-        <th>hapus</th>
-    </tr>
-    
-    ';
-    $no=$mulai+1;
-    if ($jumlah > 0) {
-        while ($row = mysqli_fetch_assoc ($result)) {
-            echo ' <tr>';
-            echo '<td> '.$no++.'</td>';
-            echo '<td> '.$row['kategori']. '</td>';
-            echo '<td><a href="?hapus='.$row['idkategori'].'">'.'hapus'.'</a></td>';
-            echo '</tr>';
-        }
-    }
-
- 
-    echo '</table>';
- 
 
 ?>
